@@ -24,19 +24,14 @@ public class MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        try{
-            Thread.sleep(3);
-        }catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-        }
+
 
         //Setup the animation(s)
         myAV = (AnimationView)findViewById(R.id.animationArea);
         myAV.addAnimation(new StarAnimation(myAV.getMyWidth(), myAV.getMyHeight()));
 
-        for(int i=1; i<100; i++){
-            myAV.postInvalidate();
-        }
+        animationThread thread= new animationThread(myAV);
+        thread.start();
 
         //Let me know when someone taps the button
         theButton = (Button)findViewById(R.id.button);
