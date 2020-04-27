@@ -49,6 +49,7 @@ public class StarAnimation extends Animation {
 
 
         field.add(new Star(x, y));
+        Log.i("StarAnimation", "+ Total: " + field.size());
     }//addStar
 
     /** removes a random star from the field */
@@ -57,6 +58,7 @@ public class StarAnimation extends Animation {
             int index = rand.nextInt(field.size());
             field.remove(index);
         }
+        Log.i("StarAnimation", "- Total: " + field.size());
     }//removeStar
 
     /** draws the next frame of the animation */
@@ -75,12 +77,19 @@ public class StarAnimation extends Animation {
     /** the seekbar progress specifies the brightnes of the stars. */
     @Override
     public void progressChange(int newProgress) {
-        for(int i=0; i<newProgress; i++){
-            if(field.size() < 999){
-                addStar();
-            }else{
-                removeStar();
-            }
-        }
+        newProgress = Math.max(Math.min(newProgress * 10, 1000), 100);
+       int diff = newProgress - field.size();
+       Log.i("StarAnimation", "prog: " + newProgress + ", fieldsize: " + field.size());
+       if (diff < 0) {
+           for (int i = 0; i < -diff; i++) {
+               removeStar();
+           }
+       }
+       if (diff > 0) {
+           for (int i = 0; i < diff; i++) {
+               addStar();
+           }
+       }
+
     }
 }//class StarAnimation
